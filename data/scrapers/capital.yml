@@ -1,0 +1,120 @@
+site: capital
+templates:
+- name: default-article
+  priority: 10
+  enabled: true
+  url_regex: ''
+  extract:
+    title: h1::text
+    section: div.headingS5 h2::text
+    tags:
+      join_texts:
+        selector: ul.tags li::text
+        sep: ' | '
+    published_time:
+      any:
+      - h5.category::text
+    updated_time:
+      any:
+      - meta[property='article:modified_time']::attr(content)
+    main_image:
+      any:
+      - .article__content img::attr(src)
+    body_config:
+      main_container_css: '#article-container'
+      body_container_css: '#articleBody'
+    container_text:
+      exclude:
+      - .ad
+      - '[class*=''ad-'']'
+      - '[id*=''ad-'']'
+      - .advert
+      - .promo
+      - figure
+      - .gallery
+      - .slideshow
+      - .lightbox
+      - .video
+      - .embed
+      - iframe
+      - .social
+      - .share
+      - .related
+      - .tags
+      - .breadcrumbs
+      - .author-box
+      - .newsletter
+      - script
+      - style
+      - noscript
+      boilerplate_regex:
+      - (?i)^σχετικά άρθρα:.*
+      - (?i)^διαβάστε επίσης:.*
+      - (?i)^ακολουθήστε μας.*|^follow us.*
+      - (?i)^περισσότερα.*
+      - (?i)^πηγή:.*
+      - (?i)^copyright.*|^all rights reserved.*
+      - Πηγή:.*
+    accept:
+      min_body_chars: 400
+  dom_probe:
+  - '#article-container'
+- name: default-article-2
+  priority: 15
+  enabled: true
+  url_regex: ''
+  extract:
+    title: h1::text
+    section: div.headingS5 h2::text
+    tags:
+      join_texts:
+        selector: ul.tags li
+        sep: ' | '
+    published_time:
+      any:
+      - h5.category::text
+    updated_time:
+      any:
+      - meta[property='article:modified_time']::attr(content)
+    main_image:
+      any:
+      - .article__content img::attr(src)
+    body_config:
+      main_container_css: main
+      body_container_css: '#articleBody'
+    container_text:
+      exclude:
+      - .ad
+      - '[class*=''ad-'']'
+      - '[id*=''ad-'']'
+      - .advert
+      - .promo
+      - figure
+      - .gallery
+      - .slideshow
+      - .lightbox
+      - .video
+      - .embed
+      - iframe
+      - .social
+      - .share
+      - .related
+      - .tags
+      - .breadcrumbs
+      - .author-box
+      - .newsletter
+      - script
+      - style
+      - noscript
+      boilerplate_regex:
+      - (?i)^σχετικά άρθρα:.*
+      - (?i)^διαβάστε επίσης:.*
+      - (?i)^ακολουθήστε μας.*|^follow us.*
+      - (?i)^περισσότερα.*
+      - (?i)^πηγή:.*
+      - (?i)^copyright.*|^all rights reserved.*
+      - Πηγή:.*
+    accept:
+      min_body_chars: 400
+  dom_probe:
+  - main

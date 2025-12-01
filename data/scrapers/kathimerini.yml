@@ -1,0 +1,332 @@
+site: kathimerini
+templates:
+- name: default-article
+  priority: 10
+  enabled: true
+  url_regex: ''
+  extract:
+    title: h1::text
+    subtitle: .article__subtitle::text
+    lead:
+      any:
+      - div.nx-excerpt::text
+    section: span.nx-single-category-title::text
+    author:
+      join_texts:
+        selector: span.author
+        sep: ', '
+    tags:
+      join_texts:
+        selector: span.tags-links a
+        sep: ' | '
+    published_time:
+      any:
+      - time::attr(datetime)
+    updated_time:
+      any:
+      - meta[property='article:modified_time']::attr(content)
+    main_image:
+      any:
+      - div.post-thumbnail a::attr(href)
+    body_config:
+      main_container_css: article
+      body_container_css: div#main-content
+    container_text:
+      exclude:
+      - .entry-content-meta-wrapper
+      - .social-share-wrapper
+      - .tags-links
+      - .ad
+      - '[class*=''ad-'']'
+      - '[id*=''ad-'']'
+      - .advert
+      - .promo
+      - figure
+      - .gallery
+      - .slideshow
+      - .lightbox
+      - .video
+      - .embed
+      - iframe
+      - .social
+      - .share
+      - .related
+      - .tags
+      - .breadcrumbs
+      - .author-box
+      - .newsletter
+      - script
+      - style
+      - noscript
+      boilerplate_regex:
+      - (?i)^σχετικά άρθρα:.*
+      - (?i)^διαβάστε επίσης:.*
+      - (?i)^ακολουθήστε μας.*|^follow us.*
+      - (?i)^περισσότερα.*
+      - (?i)^πηγή:.*
+      - (?i)^copyright.*|^all rights reserved.*
+      - (?i)^σχετικά άρθρα:.*
+      - (?i)^διαβάστε επίσης:.*
+      - (?i)^ακολουθήστε μας.*|^follow us.*
+      - (?i)^περισσότερα.*
+      - (?i)^πηγή:.*
+      - (?:^|\s)[®©]?\s*Η\s+ΕΦΗΜΕΡΙΔΑ\s+ΤΩΝ\s+ΣΥΝΤΑΚΤΩΝ[^\w]*$
+    accept:
+      min_body_chars: 250
+  dom_probe:
+  - article
+  fetch:
+    requires_js: false
+    wait_css: ''
+    wait_timeout: 20
+    consent:
+      enabled: true
+- name: entypi-ekdosi
+  priority: 15
+  enabled: true
+  url_regex: ''
+  extract:
+    title: h1::text
+    subtitle: .article__subtitle::text
+    lead:
+      any:
+      - div.nx-excerpt::text
+    section: span.nx-single-category-title::text
+    author:
+      join_texts:
+        selector: span.author
+        sep: ', '
+    tags:
+      join_texts:
+        selector: span.tags-links a
+        sep: ' | '
+    published_time:
+      any:
+      - time::attr(datetime)
+    updated_time:
+      any:
+      - meta[property='article:modified_time']::attr(content)
+    main_image:
+      any:
+      - img.picture-nx-big::attr(src)
+    body_config:
+      main_container_css: body
+      body_container_css: div#main-content
+    container_text:
+      exclude:
+      - .entry-content-meta-wrapper
+      - .social-share-wrapper
+      - .tags-links
+      - .ad
+      - '[class*=''ad-'']'
+      - '[id*=''ad-'']'
+      - .advert
+      - .promo
+      - figure
+      - .gallery
+      - .slideshow
+      - .lightbox
+      - .video
+      - .embed
+      - iframe
+      - .social
+      - .share
+      - .related
+      - .tags
+      - .breadcrumbs
+      - .author-box
+      - .newsletter
+      - script
+      - style
+      - noscript
+      boilerplate_regex:
+      - (?i)^σχετικά άρθρα:.*
+      - (?i)^διαβάστε επίσης:.*
+      - (?i)^ακολουθήστε μας.*|^follow us.*
+      - (?i)^περισσότερα.*
+      - (?i)^πηγή:.*
+      - (?i)^copyright.*|^all rights reserved.*
+      - (?i)^σχετικά άρθρα:.*
+      - (?i)^διαβάστε επίσης:.*
+      - (?i)^ακολουθήστε μας.*|^follow us.*
+      - (?i)^περισσότερα.*
+      - (?i)^πηγή:.*
+      - (?:^|\s)[®©]?\s*Η\s+ΕΦΗΜΕΡΙΔΑ\s+ΤΩΝ\s+ΣΥΝΤΑΚΤΩΝ[^\w]*$
+    accept:
+      min_body_chars: 250
+  dom_probe:
+  - body
+  fetch:
+    requires_js: false
+    wait_css: ''
+    wait_timeout: 20
+    consent:
+      enabled: true
+- name: thema
+  priority: 17
+  enabled: true
+  url_regex: ''
+  extract:
+    title: h1::text
+    subtitle: .article__subtitle::text
+    lead:
+      any:
+      - div.nx-excerpt::text
+    section: span.nx-single-category-title::text
+    author:
+      join_texts:
+        selector: span.author
+        sep: ', '
+    tags:
+      join_texts:
+        selector: span.tags-links a
+        sep: ' | '
+    published_time:
+      any:
+      - time::attr(datetime)
+    updated_time:
+      any:
+      - meta[property='article:modified_time']::attr(content)
+    main_image:
+      any:
+      - img.picture-::attr(src)
+    body_config:
+      main_container_css: body
+      body_container_css: div#main-content
+    container_text:
+      exclude:
+      - .entry-content-meta-wrapper
+      - .social-share-wrapper
+      - .tags-links
+      - .ad
+      - '[class*=''ad-'']'
+      - '[id*=''ad-'']'
+      - .advert
+      - .promo
+      - figure
+      - .gallery
+      - .slideshow
+      - .lightbox
+      - .video
+      - .embed
+      - iframe
+      - .social
+      - .share
+      - .related
+      - .tags
+      - .breadcrumbs
+      - .author-box
+      - .newsletter
+      - script
+      - style
+      - noscript
+      boilerplate_regex:
+      - (?i)^σχετικά άρθρα:.*
+      - (?i)^διαβάστε επίσης:.*
+      - (?i)^ακολουθήστε μας.*|^follow us.*
+      - (?i)^περισσότερα.*
+      - (?i)^πηγή:.*
+      - (?i)^copyright.*|^all rights reserved.*
+      - (?i)^σχετικά άρθρα:.*
+      - (?i)^διαβάστε επίσης:.*
+      - (?i)^ακολουθήστε μας.*|^follow us.*
+      - (?i)^περισσότερα.*
+      - (?i)^πηγή:.*
+      - (?:^|\s)[®©]?\s*Η\s+ΕΦΗΜΕΡΙΔΑ\s+ΤΩΝ\s+ΣΥΝΤΑΚΤΩΝ[^\w]*$
+    accept:
+      min_body_chars: 250
+  dom_probe:
+  - body
+  fetch:
+    requires_js: false
+    wait_css: ''
+    wait_timeout: 20
+    consent:
+      enabled: true
+- name: infografics
+  priority: 16
+  enabled: true
+  url_regex: ''
+  extract:
+    title: h1::text
+    subtitle: .article__subtitle::text
+    lead:
+      any:
+      - div.nx-excerpt::text
+    section: span.nx-single-category-title::text
+    author:
+      join_texts:
+        selector: span.author
+        sep: ', '
+    tags:
+      join_texts:
+        selector: span.tags-links a
+        sep: ' | '
+    published_time:
+      any:
+      - span.entry-meta-date::text
+    updated_time:
+      any:
+      - meta[property='article:modified_time']::attr(content)
+    main_image:
+      any:
+      - picture img::attr(src)
+    body_config:
+      main_container_css: body
+      body_container_css: div#main-content
+    container_text:
+      exclude:
+      - .entry-content-meta-wrapper
+      - .social-share-wrapper
+      - .tags-links
+      - .ad
+      - '[class*=''ad-'']'
+      - '[id*=''ad-'']'
+      - .advert
+      - .promo
+      - figure
+      - .gallery
+      - .slideshow
+      - .lightbox
+      - .video
+      - .embed
+      - iframe
+      - .social
+      - .share
+      - .related
+      - .tags
+      - .breadcrumbs
+      - .author-box
+      - .newsletter
+      - script
+      - style
+      - noscript
+      boilerplate_regex:
+      - (?i)^σχετικά άρθρα:.*
+      - (?i)^διαβάστε επίσης:.*
+      - (?i)^ακολουθήστε μας.*|^follow us.*
+      - (?i)^περισσότερα.*
+      - (?i)^πηγή:.*
+      - (?i)^copyright.*|^all rights reserved.*
+      - (?i)^σχετικά άρθρα:.*
+      - (?i)^διαβάστε επίσης:.*
+      - (?i)^ακολουθήστε μας.*|^follow us.*
+      - (?i)^περισσότερα.*
+      - (?i)^πηγή:.*
+      - (?:^|\s)[®©]?\s*Η\s+ΕΦΗΜΕΡΙΔΑ\s+ΤΩΝ\s+ΣΥΝΤΑΚΤΩΝ[^\w]*$
+    accept:
+      min_body_chars: 250
+  dom_probe:
+  - body
+  fetch:
+    requires_js: false
+    wait_css: ''
+    wait_timeout: 20
+    consent:
+      enabled: true
+fetch:
+  default_engine: selenium
+  allow_js_fallback: false
+  wait_timeout: 5
+  consent:
+    enabled: true

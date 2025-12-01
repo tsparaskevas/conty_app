@@ -1,0 +1,132 @@
+site: euro2day
+templates:
+- name: default-article
+  priority: 10
+  enabled: true
+  url_regex: ''
+  extract:
+    title: h1::text
+    subtitle: p.description::text
+    section: ul.article-category li:last-child::text
+    tags:
+      join_texts:
+        selector: ul.nav.nav-pills li
+        sep: ' | '
+    published_time:
+      any:
+      - .post-details.post-date strong::text
+    updated_time:
+      any:
+      - .post-details.post-date p:last-child strong::text
+    main_image:
+      any:
+      - meta[property='og:image']::attr(content)
+    body_config:
+      main_container_css: body
+      body_container_css: article#textforresizing
+    container_text:
+      exclude:
+      - .ad
+      - '[class*=''ad-'']'
+      - '[id*=''ad-'']'
+      - .advert
+      - .promo
+      - figure
+      - .gallery
+      - .slideshow
+      - .lightbox
+      - .video
+      - .embed
+      - iframe
+      - .social
+      - .share
+      - .related
+      - .tags
+      - .breadcrumbs
+      - .author-box
+      - .newsletter
+      - script
+      - style
+      - noscript
+      boilerplate_regex:
+      - (?i)^σχετικά άρθρα:.*
+      - (?i)^διαβάστε επίσης:.*
+      - (?i)^ακολουθήστε μας.*|^follow us.*
+      - (?i)^περισσότερα.*
+      - (?i)^πηγή:.*
+      - (?i)^copyright.*|^all rights reserved.*
+    accept:
+      min_body_chars: 400
+  dom_probe:
+  - body
+- name: blog
+  priority: 15
+  enabled: true
+  url_regex: ''
+  extract:
+    title: h1::text
+    subtitle: p.description::text
+    section: ul.article-category li:last-child::text
+    tags:
+      join_texts:
+        selector: ul.nav.nav-pills li
+        sep: ' | '
+    published_time:
+      any:
+      - .blog-page-date::text
+    updated_time:
+      any:
+      - .post-details.post-date p:last-child strong::text
+    main_image:
+      any:
+      - meta[property='og:image']::attr(content)
+    body_config:
+      main_container_css: body
+      body_container_css: article#textforresizing
+    container_text:
+      exclude:
+      - .ad
+      - '[class*=''ad-'']'
+      - '[id*=''ad-'']'
+      - .advert
+      - .promo
+      - figure
+      - .gallery
+      - .slideshow
+      - .lightbox
+      - .video
+      - .embed
+      - iframe
+      - .social
+      - .share
+      - .related
+      - .tags
+      - .breadcrumbs
+      - .author-box
+      - .newsletter
+      - script
+      - style
+      - noscript
+      boilerplate_regex:
+      - (?i)^σχετικά άρθρα:.*
+      - (?i)^διαβάστε επίσης:.*
+      - (?i)^ακολουθήστε μας.*|^follow us.*
+      - (?i)^περισσότερα.*
+      - (?i)^πηγή:.*
+      - (?i)^copyright.*|^all rights reserved.*
+    accept:
+      min_body_chars: 400
+  dom_probe:
+  - body
+  fetch:
+    requires_js: false
+    wait_css: ''
+    wait_timeout: 20
+    consent:
+      enabled: true
+fetch:
+  default_engine: requests
+  allow_js_fallback: true
+  wait_timeout: 20
+  consent:
+    enabled: true

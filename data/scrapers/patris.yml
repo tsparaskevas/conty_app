@@ -1,0 +1,9 @@
+site: patris
+templates: []
+fetch:
+  default_engine: requests
+  allow_js_fallback: true
+  wait_timeout: 5
+  consent:
+    enabled: true
+    xpaths: []

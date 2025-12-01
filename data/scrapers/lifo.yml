@@ -1,0 +1,217 @@
+site: lifo
+templates:
+- name: default-article
+  priority: 10
+  enabled: true
+  url_regex: ''
+  extract:
+    title: h1::text
+    subtitle: .article__teaser::text
+    section: .article__category::text
+    author:
+      join_texts:
+        selector: .article__author
+        sep: ', '
+    published_time:
+      any:
+      - meta[property='article:published_time']::attr(content)
+    updated_time:
+      any:
+      - meta[property='article:modified_time']::attr(content)
+    main_image:
+      any:
+      - .article__media-image img::attr(src)
+    body_config:
+      main_container_css: article.article
+      body_container_css: .article__body
+    container_text:
+      exclude:
+      - aside
+      - .ad
+      - '[class*=''ad-'']'
+      - '[id*=''ad-'']'
+      - .advert
+      - .promo
+      - figure
+      - .gallery
+      - .slideshow
+      - .lightbox
+      - .video
+      - .embed
+      - iframe
+      - .social
+      - .share
+      - .related
+      - .tags
+      - .breadcrumbs
+      - .author-box
+      - .newsletter
+      - script
+      - style
+      - noscript
+      boilerplate_regex:
+      - (?i)^σχετικά άρθρα:.*
+      - (?i)^διαβάστε επίσης:.*
+      - (?i)^ακολουθήστε μας.*|^follow us.*
+      - (?i)^περισσότερα.*
+      - (?i)^πηγή:.*
+      - (?i)^copyright.*|^all rights reserved.*
+    accept:
+      min_body_chars: 400
+  dom_probe:
+  - article.article
+  fetch:
+    requires_js: false
+    wait_css: ''
+    wait_timeout: 20
+    consent:
+      enabled: true
+      xpaths: []
+- name: podcasts
+  priority: 15
+  enabled: true
+  url_regex: https://www.lifo.gr/(podcasts)/.*
+  extract:
+    title: h1::text
+    subtitle: .article__teaser::text
+    lead:
+      any:
+      - .v2_lead::text
+    section: .v2_header_podc_top span::text
+    author:
+      join_texts:
+        selector: .pod-author a
+        sep: ', '
+    tags:
+      join_texts:
+        selector: .tags li
+        sep: ' | '
+    published_time:
+      any:
+      - meta[property='article:published_time']::attr(content)
+    updated_time:
+      any:
+      - meta[property='article:modified_time']::attr(content)
+    main_image:
+      any:
+      - .v2_top_image img::attr(src)
+    body_config:
+      main_container_css: .v2_articles_content
+      body_container_css: .bodycontent
+    container_text:
+      exclude:
+      - aside
+      - .ad
+      - '[class*=''ad-'']'
+      - '[id*=''ad-'']'
+      - .advert
+      - .promo
+      - figure
+      - .gallery
+      - .slideshow
+      - .lightbox
+      - .video
+      - .embed
+      - iframe
+      - .social
+      - .share
+      - .related
+      - .tags
+      - .breadcrumbs
+      - .author-box
+      - .newsletter
+      - script
+      - style
+      - noscript
+      boilerplate_regex:
+      - (?i)^σχετικά άρθρα:.*
+      - (?i)^διαβάστε επίσης:.*
+      - (?i)^ακολουθήστε μας.*|^follow us.*
+      - (?i)^περισσότερα.*
+      - (?i)^πηγή:.*
+      - (?i)^copyright.*|^all rights reserved.*
+    accept:
+      min_body_chars: 400
+  dom_probe:
+  - .v2_articles_content
+  fetch:
+    requires_js: false
+    wait_css: ''
+    wait_timeout: 20
+    consent:
+      enabled: true
+      xpaths: []
+- name: guide
+  priority: 12
+  enabled: true
+  url_regex: https://www.lifo.gr/(guide)/.*
+  extract:
+    title: h1::text
+    subtitle: .article__teaser::text
+    section: .article__category::text
+    author:
+      join_texts:
+        selector: .art-author
+        sep: ', '
+    published_time:
+      any:
+      - meta[property='article:published_time']::attr(content)
+    updated_time:
+      any:
+      - meta[property='article:modified_time']::attr(content)
+    main_image:
+      any:
+      - .article-image img::attr(src)
+    body_config:
+      main_container_css: '#main'
+      body_container_css: .maintext
+    container_text:
+      exclude:
+      - aside
+      - .ad
+      - '[class*=''ad-'']'
+      - '[id*=''ad-'']'
+      - .advert
+      - .promo
+      - figure
+      - .gallery
+      - .slideshow
+      - .lightbox
+      - .video
+      - .embed
+      - iframe
+      - .social
+      - .share
+      - .related
+      - .tags
+      - .breadcrumbs
+      - .author-box
+      - .newsletter
+      - script
+      - style
+      - noscript
+      boilerplate_regex:
+      - (?i)^σχετικά άρθρα:.*
+      - (?i)^διαβάστε επίσης:.*
+      - (?i)^ακολουθήστε μας.*|^follow us.*
+      - (?i)^περισσότερα.*
+      - (?i)^πηγή:.*
+      - (?i)^copyright.*|^all rights reserved.*
+    accept:
+      min_body_chars: 400
+  dom_probe:
+  - '#main'
+  fetch:
+    requires_js: false
+    wait_css: ''
+    wait_timeout: 5
+    consent:
+      enabled: true
+      xpaths: []
+fetch:
+  default_engine: requests
+  allow_js_fallback: true
+  wait_timeout: 5
+  consent:
+    enabled: true
+    xpaths: []

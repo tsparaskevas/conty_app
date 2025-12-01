@@ -1,0 +1,35 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Virtual environments
+venv/
+.env/
+.venv/
+
+# Streamlit
+.streamlit/
+
+# Large data directories - local only
+data/html/
+data/articles/
+data/outputs/
+data/run_logs/
+data/inputs/
+
+# Keep scrapers and demo fixtures
+!data/scrapers/
+!data/scrapers/*.yml
+!data/demo/
+!data/demo/html/
+!data/demo/csv/
+!data/demo/outputs/
+
+# OS/editor junk
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+

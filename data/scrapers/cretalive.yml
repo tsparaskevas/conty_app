@@ -1,0 +1,81 @@
+site: cretalive
+templates:
+- name: default-article
+  priority: 10
+  enabled: true
+  url_regex: ''
+  extract:
+    title: h1::text
+    subtitle: div.px-4 h2::text
+    section: div.px-4 h4::text
+    author:
+      join_texts:
+        selector: div.text-sm span
+        sep: ', '
+    tags:
+      join_texts:
+        selector: div.flex.flex-col.gap-4 div.ml-4.flex.flex-wrap.items-center.justify-center.gap-6
+          a
+        sep: ' | '
+    published_time:
+      any:
+      - time::attr(datetime)
+    updated_time:
+      any:
+      - meta[property='article:modified_time']::attr(content)
+    main_image:
+      any:
+      - figure picture img::attr(src)
+    body_config:
+      main_container_css: article.mb-14
+      body_container_css: div.mx-auto.flex.flex-col.mt-10.px-4
+    container_text:
+      exclude:
+      - .embedded-entity
+      - .ad
+      - '[class*=''ad-'']'
+      - '[id*=''ad-'']'
+      - .advert
+      - .promo
+      - figure
+      - .gallery
+      - .slideshow
+      - .lightbox
+      - .video
+      - .embed
+      - iframe
+      - .social
+      - .share
+      - .related
+      - .tags
+      - .breadcrumbs
+      - .author-box
+      - .newsletter
+      - script
+      - style
+      - noscript
+      boilerplate_regex:
+      - (?i)^σχετικά άρθρα:.*
+      - (?i)^διαβάστε επίσης:.*
+      - (?i)^ακολουθήστε μας.*|^follow us.*
+      - (?i)^περισσότερα.*
+      - (?i)^πηγή:.*
+      - (?i)^copyright.*|^all rights reserved.*
+    accept:
+      min_body_chars: 400
+  dom_probe:
+  - article.mb-14
+  fetch:
+    requires_js: false
+    wait_css: ''
+    wait_timeout: 20
+    consent:
+      enabled: true
+      xpaths: []
+fetch:
+  default_engine: requests
+  allow_js_fallback: true
+  wait_timeout: 20
+  consent:
+    enabled: true
+    xpaths: []

@@ -1,0 +1,67 @@
+site: zougla
+templates:
+- name: default-article
+  priority: 10
+  enabled: true
+  url_regex: ''
+  extract:
+    title: h1::text
+    lead:
+      any:
+      - .single-post-excerpt::text
+    section: .post-category::text
+    author:
+      join_texts:
+        selector: .author__name
+        sep: ', '
+    tags:
+      join_texts:
+        selector: .tags a
+        sep: ' | '
+    published_time:
+      any:
+      - .entry-meta__published_date::text
+    updated_time:
+      any:
+      - .entry-meta__modidied_date::text
+    main_image:
+      any:
+      - .entry-img img::attr(src)
+    body_config:
+      main_container_css: article.single-article
+      body_container_css: .post-contents
+    container_text:
+      exclude:
+      - .ad
+      - '[class*=''ad-'']'
+      - '[id*=''ad-'']'
+      - .advert
+      - .promo
+      - figure
+      - .gallery
+      - .slideshow
+      - .lightbox
+      - .video
+      - .embed
+      - iframe
+      - .social
+      - .share
+      - .related
+      - .tags
+      - .breadcrumbs
+      - .author-box
+      - .newsletter
+      - script
+      - style
+      - noscript
+      boilerplate_regex:
+      - (?i)^σχετικά άρθρα:.*
+      - (?i)^διαβάστε επίσης:.*
+      - (?i)^ακολουθήστε μας.*|^follow us.*
+      - (?i)^περισσότερα.*
+      - (?i)^πηγή:.*
+      - (?i)^copyright.*|^all rights reserved.*
+    accept:
+      min_body_chars: 400
+  dom_probe:
+  - article.single-article

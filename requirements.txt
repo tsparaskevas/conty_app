@@ -1,0 +1,13 @@
+streamlit>=1.36
+pandas>=2.1
+pyyaml>=6.0
+requests>=2.31
+selectolax>=0.3.21
+trafilatura>=1.6.3
+readability-lxml>=0.8.1
+lxml>=5.2.2
+python-dateutil>=2.9
+beautifulsoup4>=4.12
+selenium>=4.23.0
+webdriver-manager>=4.0.2
+

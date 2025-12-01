@@ -1,0 +1,75 @@
+site: documentonews
+templates:
+- name: default-article
+  priority: 10
+  enabled: true
+  url_regex: ''
+  extract:
+    title: h1::text
+    lead:
+      any:
+      - p.lead::text
+    section: nav.rank-math-breadcrumb a:last-of-type::text
+    author:
+      join_texts:
+        selector: span.author a
+        sep: ', '
+    tags:
+      join_texts:
+        selector: .post-tags a
+        sep: ' | '
+    published_time:
+      any:
+      - span.date::text
+    updated_time:
+      any:
+      - meta[property='article:modified_time']::attr(content)
+    main_image:
+      any:
+      - .article-img img::attr(src)
+    body_config:
+      main_container_css: main.main
+      body_container_css: '#main-content'
+    container_text:
+      exclude:
+      - .ad
+      - '[class*=''wp-video'']'
+      - '[class*=''ad-'']'
+      - '[id*=''ad-'']'
+      - .advert
+      - .promo
+      - figure
+      - .gallery
+      - .slideshow
+      - .lightbox
+      - .video
+      - .embed
+      - iframe
+      - .social
+      - .share
+      - .related
+      - .tags
+      - .breadcrumbs
+      - .author-box
+      - .newsletter
+      - script
+      - style
+      - noscript
+      boilerplate_regex:
+      - (?i)^σχετικά άρθρα:.*
+      - (?i)^διαβάστε επίσης:.*
+      - διαβάστε σχετικά εδώ.{2}
+      - (?i)^ακολουθήστε μας.*|^follow us.*
+      - (?i)^περισσότερα.*
+      - (?i)^πηγή:.*
+      - (?i)^copyright.*|^all rights reserved.*
+    accept:
+      min_body_chars: 400
+  dom_probe:
+  - main.main
+fetch:
+  default_engine: requests
+  allow_js_fallback: true
+  wait_timeout: 20
+  consent:
+    enabled: true

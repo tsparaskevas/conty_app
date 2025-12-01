@@ -1,0 +1,111 @@
+site: protothema
+templates:
+- name: default-article
+  priority: 10
+  enabled: true
+  url_regex: ''
+  fetch:
+    requires_js: false
+    wait_css: ''
+    wait_timeout: 5
+    consent:
+      enabled: true
+      xpaths: []
+  extract:
+    body_config:
+      main_container_css: section.section.mainSection
+      body_container_css: div.articleContainer__main
+    container_text:
+      exclude:
+      - script
+      - style
+      - nav
+      - footer
+      - header
+      - .mceNonEditable
+      - .articleContainer__mainLeft
+      - .infoContent
+      - .bottomComponents
+      - .ad
+      - .ads
+      - .advert
+      - .advertisement
+      - .social
+      - .share
+      - .related
+      - .newsletter
+      boilerplate_regex:
+      - ^Ειδήσεις σήμερα:.*
+      - ^Διαβάστε επίσης:.*
+      - ^Διαβάστε ακόμη:.*
+      - ^Διαβάστε ακόμα:.*
+      - ^Δείτε επίσης:.*
+      - ^Δείτε ακόμη:.*
+      - ^Δείτε ακόμα:.*
+      - Ειδήσεις σήμερα:.*
+    accept:
+      min_body_chars: 400
+    title: h1
+    subtitle: null
+    lead: .articleTopInfo h3
+    section: a.categ
+    author: null
+    tags: .tags a
+    published_time: div.articleContainer__tools div.wrp time
+    updated_time: null
+    main_image: div.item picture img
+- name: stories
+  priority: 5
+  enabled: true
+  url_regex: https://www.protothema.gr/stories/.*
+  fetch:
+    requires_js: false
+    wait_css: ''
+    wait_timeout: 5
+    consent:
+      enabled: true
+      xpaths: []
+  extract:
+    body_config:
+      main_container_css: section.articleContainer
+      body_container_css: div.wrapper
+    container_text:
+      exclude:
+      - script
+      - style
+      - nav
+      - footer
+      - header
+      - .ad
+      - .ads
+      - .advert
+      - .advertisement
+      - .social
+      - .share
+      - .related
+      - .newsletter
+      boilerplate_regex:
+      - ^Διαβάστε επίσης:.*
+      - ^Διαβάστε ακόμη:.*
+      - ^Διαβάστε ακόμα:.*
+      - ^Δείτε επίσης:.*
+      - ^Δείτε ακόμη:.*
+      - ^Δείτε ακόμα:.*
+    accept:
+      min_body_chars: 400
+    title: h1
+    subtitle: .articleTopInfo h3
+    lead: null
+    section: a.categ
+    author: div.author
+    tags: .tags a
+    published_time: .articleInfo time
+    updated_time: null
+    main_image: .longFormHero__image img::attr(src)
+fetch:
+  requires_js: false
+  wait_css: ''
+  wait_timeout: 20.0
+  consent:
+    enabled: false
+    xpaths: []

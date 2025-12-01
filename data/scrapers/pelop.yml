@@ -1,0 +1,76 @@
+site: pelop
+templates:
+- name: default-article
+  priority: 10
+  enabled: true
+  url_regex: ''
+  extract:
+    title: h1::text
+    lead:
+      any:
+      - .excerpt::text
+    section: nav.rank-math-breadcrumb a:last-child::text
+    author:
+      join_texts:
+        selector: .avatar p
+        sep: ', '
+    tags:
+      join_texts:
+        selector: .tags li
+        sep: ' | '
+    published_time:
+      any:
+      - meta[property='article:published_time']::attr(content)
+    updated_time:
+      any:
+      - meta[property='article:modified_time']::attr(content)
+    main_image:
+      any:
+      - .feat-img img::attr(src)
+    body_config:
+      main_container_css: div.page-content
+      body_container_css: .post-inner
+    container_text:
+      exclude:
+      - .avatar
+      - .ad
+      - '[class*=''ad-'']'
+      - '[id*=''ad-'']'
+      - .advert
+      - .promo
+      - figure
+      - .gallery
+      - .slideshow
+      - .lightbox
+      - .video
+      - .embed
+      - iframe
+      - .social
+      - .share
+      - .related
+      - .tags
+      - .breadcrumbs
+      - .author-box
+      - .newsletter
+      - script
+      - style
+      - noscript
+      boilerplate_regex:
+      - (?i)^σχετικά άρθρα:.*
+      - (?i)^διαβάστε επίσης:.*
+      - (?i)^ακολουθήστε μας.*|^follow us.*
+      - Ακολουθήστε μας.*
+      - (?i)^περισσότερα.*
+      - (?i)^πηγή:.*
+      - (?i)^copyright.*|^all rights reserved.*
+    accept:
+      min_body_chars: 400
+  dom_probe:
+  - div.page-content
+fetch:
+  default_engine: requests
+  allow_js_fallback: true
+  wait_timeout: 20
+  consent:
+    enabled: true
+    xpaths: []

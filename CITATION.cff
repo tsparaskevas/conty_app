@@ -1,0 +1,16 @@
+cff-version: 1.2.0
+title: "Conty App"
+message: "If you use this app, please cite it."
+type: software
+authors:
+  - family-names: Paraskevas
+    given-names: Thodoris
+repository-code: "https://github.com/tsparaskevas/conty_app"
+version: "1.0.0"
+date-released: "2025-09-22"
+license: MIT
+abstract: >
+  UI to build/edit/test article scrapers for news-sites with Requests-Selenium
+  fallback, consent-click handling, multi-template site configs, matrix testing
+  on teaser CSVs, multi-site article runs, saved HTML snapshots, logs and
+  scraped article browsing/exploration.

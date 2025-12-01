@@ -1,0 +1,221 @@
+site: newmoney
+templates:
+- name: default-article
+  priority: 10
+  enabled: true
+  url_regex: ''
+  extract:
+    title: h1::text
+    section: .category-title::text
+    author:
+      join_texts:
+        selector: .author
+        sep: ', '
+    tags:
+      join_texts:
+        selector: .tag-list li
+        sep: ' | '
+    published_time:
+      any:
+      - meta[property='article:published_time']::attr(content)
+    updated_time:
+      any:
+      - meta[property='article:modified_time']::attr(content)
+    main_image:
+      any:
+      - .article-main-image img::attr(src)
+    body_config:
+      main_container_css: article
+      body_container_css: .post-content
+    container_text:
+      exclude:
+      - .ad
+      - '[class*=''ad-'']'
+      - '[id*=''ad-'']'
+      - .advert
+      - .promo
+      - figure
+      - .gallery
+      - .slideshow
+      - .lightbox
+      - .video
+      - .embed
+      - iframe
+      - .social
+      - .share
+      - .related
+      - .tags
+      - .breadcrumbs
+      - .author-box
+      - .newsletter
+      - script
+      - style
+      - noscript
+      boilerplate_regex:
+      - (?i)^σχετικά άρθρα:.*
+      - (?i)^διαβάστε επίσης:.*
+      - (?i)^ακολουθήστε μας.*|^follow us.*
+      - (?i)^περισσότερα.*
+      - (?i)^πηγή:.*
+      - (?i)^copyright.*|^all rights reserved.*
+      - διαβάστε ακόμη.*
+    accept:
+      min_body_chars: 400
+  dom_probe:
+  - article
+  fetch:
+    requires_js: false
+    wait_css: ''
+    wait_timeout: 5
+    consent:
+      enabled: true
+      xpaths: []
+- name: no-roh
+  priority: 15
+  enabled: true
+  url_regex: https://www.newmoney.gr/(journal)/.*
+  extract:
+    title: h1::text
+    section: .article-category::text
+    author:
+      join_texts:
+        selector: .author
+        sep: ', '
+    tags:
+      join_texts:
+        selector: .tag-list li
+        sep: ' | '
+    published_time:
+      any:
+      - meta[property='article:published_time']::attr(content)
+    updated_time:
+      any:
+      - meta[property='article:modified_time']::attr(content)
+    main_image:
+      any:
+      - .header-image img::attr(src)
+    body_config:
+      main_container_css: article
+      body_container_css: .article-body
+    container_text:
+      exclude:
+      - div.image-wrapper-simple
+      - .ad
+      - '[class*=''ad-'']'
+      - '[id*=''ad-'']'
+      - .advert
+      - .promo
+      - figure
+      - .gallery
+      - .slideshow
+      - .lightbox
+      - .video
+      - .embed
+      - iframe
+      - .social
+      - .share
+      - .related
+      - .tags
+      - .breadcrumbs
+      - .author-box
+      - .newsletter
+      - script
+      - style
+      - noscript
+      boilerplate_regex:
+      - (?i)^σχετικά άρθρα:.*
+      - (?i)^διαβάστε επίσης:.*
+      - (?i)^ακολουθήστε μας.*|^follow us.*
+      - (?i)^περισσότερα.*
+      - (?i)^πηγή:.*
+      - (?i)^copyright.*|^all rights reserved.*
+      - διαβάστε ακόμη.*
+    accept:
+      min_body_chars: 400
+  dom_probe:
+  - article
+  fetch:
+    requires_js: false
+    wait_css: ''
+    wait_timeout: 5
+    consent:
+      enabled: true
+      xpaths: []
+- name: dark-room
+  priority: 20
+  enabled: true
+  url_regex: https://www.newmoney.gr/(dark-room)/.*
+  extract:
+    title: h1::text
+    section: .article-category::text
+    author:
+      join_texts:
+        selector: .author
+        sep: ', '
+    tags:
+      join_texts:
+        selector: .tag-list li
+        sep: ' | '
+    published_time:
+      any:
+      - meta[property='article:published_time']::attr(content)
+    updated_time:
+      any:
+      - meta[property='article:modified_time']::attr(content)
+    main_image:
+      any:
+      - .header-image img::attr(src)
+    body_config:
+      main_container_css: article
+      body_container_css: .post-content
+    container_text:
+      exclude:
+      - div.image-wrapper-simple
+      - .ad
+      - '[class*=''ad-'']'
+      - '[id*=''ad-'']'
+      - .advert
+      - .promo
+      - figure
+      - .gallery
+      - .slideshow
+      - .lightbox
+      - .video
+      - .embed
+      - iframe
+      - .social
+      - .share
+      - .related
+      - .tags
+      - .breadcrumbs
+      - .author-box
+      - .newsletter
+      - script
+      - style
+      - noscript
+      boilerplate_regex:
+      - (?i)^σχετικά άρθρα:.*
+      - (?i)^διαβάστε επίσης:.*
+      - (?i)^ακολουθήστε μας.*|^follow us.*
+      - (?i)^περισσότερα.*
+      - (?i)^πηγή:.*
+      - (?i)^copyright.*|^all rights reserved.*
+      - διαβάστε ακόμη.*
+    accept:
+      min_body_chars: 400
+  dom_probe:
+  - article
+  fetch:
+    requires_js: false
+    wait_css: ''
+    wait_timeout: 5
+    consent:
+      enabled: true
+      xpaths: []
+fetch:
+  default_engine: requests
+  allow_js_fallback: true
+  wait_timeout: 5
+  consent:
+    enabled: true
+    xpaths: []

@@ -1,0 +1,78 @@
+site: slpress
+templates:
+- name: default-article
+  priority: 10
+  enabled: true
+  url_regex: ''
+  extract:
+    title: h1::text
+    lead:
+      any:
+      - .article__lead::text
+    section: .article_category::text
+    author:
+      join_texts:
+        selector: .article__author
+        sep: ', '
+    tags:
+      join_texts:
+        selector: .article__tags li
+        sep: ' | '
+    published_time:
+      any:
+      - meta[property='article:published_time']::attr(content)
+    updated_time:
+      any:
+      - meta[property='article:modified_time']::attr(content)
+    main_image:
+      any:
+      - .single_article__main_image--inner img::attr(src)
+    body_config:
+      main_container_css: article.single_article
+      body_container_css: .single_article__main
+    container_text:
+      exclude:
+      - .article__tags
+      - .dislaimer_content
+      - .comments-area
+      - .seo_promo
+      - .ad
+      - '[class*=''ad-'']'
+      - '[id*=''ad-'']'
+      - .advert
+      - .promo
+      - figure
+      - .gallery
+      - .slideshow
+      - .lightbox
+      - .video
+      - .embed
+      - iframe
+      - .social
+      - .share
+      - .related
+      - .tags
+      - .breadcrumbs
+      - .author-box
+      - .newsletter
+      - script
+      - style
+      - noscript
+      boilerplate_regex:
+      - (?i)^σχετικά άρθρα:.*
+      - (?i)^διαβάστε επίσης:.*
+      - (?i)^ακολουθήστε μας.*|^follow us.*
+      - (?i)^περισσότερα.*
+      - (?i)^πηγή:.*
+      - (?i)^copyright.*|^all rights reserved.*
+    accept:
+      min_body_chars: 400
+  dom_probe:
+  - article.single_article
+fetch:
+  default_engine: requests
+  allow_js_fallback: true
+  wait_timeout: 5
+  consent:
+    enabled: true
+    xpaths: []
