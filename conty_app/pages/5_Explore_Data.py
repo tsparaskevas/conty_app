@@ -1,4 +1,5 @@
 import re
+import os
 from pathlib import Path
 from typing import List, Dict, Tuple
 
@@ -11,8 +12,13 @@ import streamlit as st
 # Configuration
 # ---------------------------------------------------------------------
 
+DEMO_MODE = bool(os.environ.get("CONTY_DEMO", "").strip())
+
 DATA_DIR = Path("data")
-ARTICLES_DIR = DATA_DIR / "outputs" / "articles"
+if DEMO_MODE:
+    ARTICLES_DIR = DATA_DIR / "demo" / "outputs"
+else:
+    ARTICLES_DIR = DATA_DIR / "outputs" / "articles"
 
 # Expected filename pattern: site_second_third_articles.csv
 FILENAME_RE = re.compile(r"^(?P<site>[^_]+)_(?P<second>[^_]+)_(?P<third>[^_]+)_articles\.csv$")

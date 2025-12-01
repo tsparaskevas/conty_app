@@ -8,6 +8,7 @@ if str(PROJECT_ROOT) not in sys.path:
 from pathlib import Path
 from datetime import datetime, date
 import json
+import os
 from typing import Optional
 
 import streamlit as st
@@ -18,6 +19,8 @@ from urllib.parse import urljoin, urlparse
 
 st.set_page_config(page_title="5 · View Data (Articles)", layout="wide")
 st.title("View Data (Articles)")
+
+DEMO_MODE = bool(os.environ.get("CONTY_DEMO", "").strip())
 
 # --- Page intro / quick help -------------------------------------------------
 with st.expander("How this page works (quick guide)", expanded=False):
@@ -77,10 +80,13 @@ This page is for **diagnosing scraping quality** and **finding silent failures**
         """
     )
 
-
 # ------------------ Defaults & helpers ------------------
-OUTPUTS_BASE = Path("data/outputs")
-DEFAULT_DIR = OUTPUTS_BASE / "articles"
+if DEMO_MODE:
+    OUTPUTS_BASE = Path("data/demo")
+    DEFAULT_DIR = OUTPUTS_BASE / "outputs"
+else:
+    OUTPUTS_BASE = Path("data/outputs")
+    DEFAULT_DIR = OUTPUTS_BASE / "articles"
 DEFAULT_DIR.mkdir(parents=True, exist_ok=True)
 
 def _abs_url(maybe_url, base) -> str | None:

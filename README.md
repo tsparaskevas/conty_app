@@ -39,7 +39,7 @@ Paraskevas, T. (2025). *Conty App* (Version 1.0.0) [Software]. GitHub. https://g
 
 ## Live demo (Streamlit Community Cloud)
 
-👉 Try the read-only demo: **[Conty App — Streamlit Cloud](https://conty-app-.streamlit.app/)**
+👉 Try the read-only demo: **[Conty App — Streamlit Cloud](https://contyapp-znynnrnbd8fmbrmtqgt5nm.streamlit.app/)**
 
 **What works in the demo**
 - View templates and example extraction previews
