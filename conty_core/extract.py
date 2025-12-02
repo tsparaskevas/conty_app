@@ -346,40 +346,6 @@ def extract_article(
                     if ordered_text:
                         ordered_text = _apply_boilerplate(ordered_text, boiler)
 
-#        body_cfg = rules.get("body_config") or {}
-#        mc_css = (body_cfg.get("main_container_css") or "").strip()
-#        bc_css = (body_cfg.get("body_container_css") or "").strip()
-#
-#        # Try to build ordered_text from body_config.
-#        # 1) Prefer nested (main_container -> body_container)
-#        # 2) If that fails, try body_container on the whole document.
-#        if bc_css:
-#            candidate_html = None
-#
-#            # a) nested path: main container → body container
-#            if mc_css:
-#                mc_node = doc.css_first(mc_css)
-#                if mc_node and mc_node.html:
-#                    inner = HTMLParser(mc_node.html)
-#                    bnode = inner.css_first(bc_css)
-#                    if bnode and bnode.html:
-#                        candidate_html = bnode.html
-#
-#            # b) fallback: body container directly from full document
-#            if candidate_html is None:
-#                bnode = doc.css_first(bc_css)
-#                if bnode and bnode.html:
-#                    candidate_html = bnode.html
-#
-#            if candidate_html:
-#                container_html = candidate_html
-#                ordered_text = _container_text_with_exclusions_for_extract(
-#                    "<div>" + container_html + "</div>", "div", excludes
-#                )
-#                if ordered_text:
-#                    ordered_text = _apply_boilerplate(ordered_text, boiler)
-
-
         # ---------- Legacy fallback: body_html / fallback join ----------
         if ordered_text is None:
             # If body_html is empty but a body_fallback exists, try it
