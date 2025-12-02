@@ -52,7 +52,7 @@ Paraskevas, T. (2025). *Conty App* (Version 1.0.0) [Software]. GitHub. https://g
 - No writing updates to data/scrapers/
 - No file output under data/articles/ or data/run_logs/
 - Reason: public cloud sessions are resource-limited, storage is ephemeral, and many news sites actively block or rate-limit headless scrapers. 
-- The demo sets `TEASY_DEMO=1`, which disables network fetches. Clone the repo to run full scrapes locally.
+- The demo sets `CONTY_DEMO=1`, which disables network fetches. Clone the repo to run full scrapes locally.
 
 **Run the full app locally**
 ```bash
