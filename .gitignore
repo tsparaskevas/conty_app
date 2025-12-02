@@ -33,3 +33,5 @@ Thumbs.db
 .idea/
 .vscode/
 
+# Other (tests)
+test.ipynb
