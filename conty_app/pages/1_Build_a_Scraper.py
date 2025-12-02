@@ -1614,7 +1614,7 @@ with st.expander("Pick URL from teasers CSV", expanded=False):
                     )
                     picked_url = urls_for_picker[pick_idx]
 
-                    if st.button("Use this URL", key="btn_use_picked_url"):
+                    if st.button("Use this URL", type="primary", key="btn_use_picked_url"):
                         # 1) stage for the Article URL input (will be promoted before it’s created)
                         st.session_state["__next_test_url"] = picked_url
                         # 2) keep regex testing in sync (later sections)
@@ -1725,7 +1725,7 @@ else:
 
     col1, col2 = st.columns([1, 1])
     with col1:
-        if st.button("Fetch now", key="btn_fetch_page"):
+        if st.button("Fetch now", type="primary", key="btn_fetch_page"):
             # Reset caches before fetch
             st.session_state["html_cache"] = ""
             st.session_state["final_url"] = ""
