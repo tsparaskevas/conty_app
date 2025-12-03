@@ -52,7 +52,7 @@ templates:
 fetch:
   requires_js: true
   wait_css: div.articleContent
-  wait_timeout: 35.0
+  wait_timeout: 40.0
   consent:
     enabled: true
     xpaths:

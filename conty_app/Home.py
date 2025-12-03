@@ -21,9 +21,9 @@ def _safe_page_link(path: str, label: str, icon: str = "", key: str | None = Non
     (e.g., renamed/hidden), fall back to a button with a short instruction.
     """
     try:
-        st.page_link(path, label=f"{icon} {label}".strip(), use_container_width=True)
+        st.page_link(path, label=f"{icon} {label}".strip(), width="stretch")
     except Exception:
-        st.button(f"{icon} {label}".strip(), key=key, use_container_width=True, disabled=True, help=f"Add {path} to /app/pages to enable this link.")
+        st.button(f"{icon} {label}".strip(), key=key, width="stretch", disabled=True, help=f"Add {path} to /app/pages to enable this link.")
 
 # ── Hero / intro ──────────────────────────────────────────────────────────────
 st.markdown(

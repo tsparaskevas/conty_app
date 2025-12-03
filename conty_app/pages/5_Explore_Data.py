@@ -246,7 +246,7 @@ def _chart_articles_per_day_precomputed(grp: pd.DataFrame, site_choice: str) -> 
         .properties(height=400)
     )
 
-    st.altair_chart(chart, use_container_width=True)
+    st.altair_chart(chart)
 
     # Export data for this chart
     csv_articles = data.sort_values(["site", "published_date"]).to_csv(index=False)
@@ -416,7 +416,7 @@ def _chart_keywords_for_site(
     else:
         chart = base.mark_line(point=True)
 
-    st.altair_chart(chart, use_container_width=True)
+    st.altair_chart(chart)
 
     # Export data (includes both count and value if normalized)
     csv_kw_day = data.sort_values(["word", "site", "published_date"]).to_csv(index=False)
@@ -627,7 +627,7 @@ if kw_input.strip():
             )
             .properties(height=350)
         )
-        st.altair_chart(bar_chart, use_container_width=True)
+        st.altair_chart(bar_chart)
 
         # export data used for this bar chart (with percentages)
         # compute share per site/word

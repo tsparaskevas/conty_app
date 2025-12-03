@@ -237,11 +237,11 @@ with tabs[1]:
                 st.page_link(
                     "app/pages/4_View_Data.py",
                     label="Open View Data for this site",
-                    use_container_width=True,
+                    width="stretch",
                 )
                 st.session_state["__viewdata_site_hint"] = site
             except Exception:
-                if st.button("Open 'View Data' (sidebar link)", use_container_width=True):
+                if st.button("Open 'View Data' (sidebar link)", width="stretch"):
                     st.session_state["__viewdata_site_hint"] = site
                     st.success("Site hint set. Now click “View Data” in the sidebar.")
 
@@ -325,7 +325,7 @@ with tabs[1]:
                                   help="If ON, writes selected URLs to data/tmp/builder_matrix_urls.json so Targeted re-scrape can use them immediately.")
     with col_rs[1]:
         try:
-            if st.page_link("app/pages/2_Run_Scrapes.py", label="Open Run Scrapes → Targeted re-scrape", use_container_width=True):
+            if st.page_link("app/pages/2_Run_Scrapes.py", label="Open Run Scrapes → Targeted re-scrape", width="stretch"):
                 pass
             st.session_state["__runscrapes_site_hint"] = site
             if seed_subset and st.session_state.get("fail_picks_soft"):
@@ -337,7 +337,7 @@ with tabs[1]:
                 }
                 (TMP_DIR / "builder_matrix_urls.json").write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
         except Exception:
-            if st.button("Open 'Run Scrapes' (sidebar link)", use_container_width=True):
+            if st.button("Open 'Run Scrapes' (sidebar link)", width="stretch"):
                 st.session_state["__runscrapes_site_hint"] = site
                 if seed_subset and st.session_state.get("fail_picks_soft"):
                     payload = {
