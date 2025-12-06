@@ -5,22 +5,13 @@ templates:
   enabled: true
   url_regex: ''
   extract:
-    title: h1::text
-    subtitle: .entry-meta::text
-    section: .get-category::text
-    author:
-      join_texts:
-        selector: div#display_autor a
-        sep: ', '
-    published_time:
-      any:
-      - meta[property='article:published_time']::attr(content)
-    updated_time:
-      any:
-      - meta[property='article:modified_time']::attr(content)
-    main_image:
-      any:
-      - div.protagon_singleimage::attr(style_url)
+    title: h1
+    subtitle: .entry-meta
+    section: .get-category
+    author: div#display_autor a
+    published_time: div#display_autor span
+    updated_time: meta[property='article:updated_time']
+    main_image: div.protagon_singleimage
     body_config:
       main_container_css: article
       body_container_css: .content_space
@@ -58,6 +49,8 @@ templates:
       - (?i)^copyright.*|^all rights reserved.*
     accept:
       min_body_chars: 400
+    lead: null
+    tags: null
   dom_probe:
   - article
 fetch:

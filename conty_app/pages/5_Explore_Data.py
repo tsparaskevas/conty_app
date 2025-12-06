@@ -521,11 +521,51 @@ if df_all.empty:
     st.warning("No data loaded from the selected files.")
     st.stop()
 
-# Drop articles without a usable published_date (we don't care about them here)
+## Drop articles without a usable published_date 
+#before = len(df_all)
+#df_all = df_all.dropna(subset=["published_date"]).copy()
+#after = len(df_all)
+#st.info(f"Dropped {before - after} articles without published_date.")
+
+# --- Report & drop articles without a usable published_date ---
+
 before = len(df_all)
+
+# Identify rows with missing published_date
+missing_mask = df_all["published_date"].isna()
+missing_count = int(missing_mask.sum())
+
+if missing_count > 0:
+    # Group the missing-date articles by site
+    df_missing_by_site = (
+        df_all.loc[missing_mask, ["site"]]
+        .groupby("site")
+        .size()
+        .reset_index(name="missing_articles")
+        .sort_values("missing_articles", ascending=False)
+    )
+
+    st.markdown("### Excluded articles (no published_date)")
+    st.info(f"Dropped {missing_count} articles without published_date.")
+
+    # Show a small table with per-site counts
+    st.dataframe(df_missing_by_site, use_container_width=True)
+
+    # Optional: download as CSV
+    st.download_button(
+        "Download excluded-articles report (by site) as CSV",
+        data=df_missing_by_site.to_csv(index=False),
+        file_name="excluded_articles_by_site.csv",
+        mime="text/csv",
+    )
+else:
+    st.info("No articles without published_date were found.")
+
+# Now actually drop them from the working dataframe
 df_all = df_all.dropna(subset=["published_date"]).copy()
 after = len(df_all)
-st.info(f"Dropped {before - after} articles without published_date.")
+
+# -----------
 
 st.markdown("### 1. Overview of selected data")
 stats_all = _compute_stats(df_all)
@@ -697,10 +737,182 @@ if kw_input.strip():
         # Join articles counts
         pivot_totals = pivot_totals.merge(articles_per_site, on="site", how="left")
         # Reorder columns: site, articles, words...
-        word_cols = [c for c in pivot_totals.columns if c not in ("site", "articles")]
+#        word_cols = [c for c in pivot_totals.columns if c not in ("site", "articles")]
+        # Use the keywords entered by the user (words), keeping only those present in the pivot
+        word_cols = [w for w in words if w in pivot_totals.columns]
         pivot_totals = pivot_totals[["site", "articles"] + word_cols]
 
         st.dataframe(pivot_totals)
+
+        # 4.4 Bubble chart — keyword shares vs articles per site
+        st.markdown("#### 4.4 Bubble chart — keyword shares vs articles per site")
+
+        if len(word_cols) >= 2:
+            col_x, col_y = st.columns(2)
+            with col_x:
+                x_word = st.selectbox(
+                    "X-axis word",
+                    options=word_cols,
+                    index=0,
+                    key="bubble_x_word",
+                )
+            with col_y:
+                y_options = [w for w in word_cols if w != x_word]
+                if not y_options:
+                    y_options = word_cols
+                y_word = st.selectbox(
+                    "Y-axis word",
+                    options=y_options,
+                    index=0,
+                    key="bubble_y_word",
+                )
+
+            # Compute shares per site (shares over all selected keywords)
+            bubble_df = pivot_totals.copy()
+            bubble_df["total_keywords"] = bubble_df[word_cols].sum(axis=1)
+            for w in word_cols:
+                bubble_df[f"share_{w}"] = np.where(
+                    bubble_df["total_keywords"] > 0,
+                    bubble_df[w] / bubble_df["total_keywords"],
+                    0.0,
+                )
+
+            chart_bubble = (
+                alt.Chart(bubble_df)
+                .mark_circle()
+                .encode(
+                    x=alt.X(
+                        f"share_{x_word}:Q",
+                        title=f"Share of '{x_word}'",
+                        axis=alt.Axis(format="%", title=f"Share of '{x_word}'"),
+                    ),
+                    y=alt.Y(
+                        f"share_{y_word}:Q",
+                        title=f"Share of '{y_word}'",
+                        axis=alt.Axis(format="%", title=f"Share of '{y_word}'"),
+                    ),
+                    size=alt.Size(
+                        "articles:Q",
+                        title="Articles",
+                        legend=alt.Legend(title="Articles"),
+                        scale=alt.Scale(range=[50, 2000]),
+                    ),
+                    color=alt.Color("site:N", title="Site"),
+                    tooltip=[
+                        "site:N",
+                        "articles:Q",
+                        alt.Tooltip(f"{x_word}:Q", title=f"count '{x_word}'"),
+                        alt.Tooltip(f"{y_word}:Q", title=f"count '{y_word}'"),
+                        alt.Tooltip(
+                            f"share_{x_word}:Q",
+                            title=f"share '{x_word}'",
+                            format=".1%",
+                        ),
+                        alt.Tooltip(
+                            f"share_{y_word}:Q",
+                            title=f"share '{y_word}'",
+                            format=".1%",
+                        ),
+                    ],
+                )
+                .properties(
+                    height=400,
+                    title=f"Sites by share of '{x_word}' vs '{y_word}' and number of articles",
+                )
+            )
+
+            st.altair_chart(chart_bubble, use_container_width=True)
+        else:
+            st.info("For the bubble chart, at least two keywords are needed.")
+
+        # 4.5 Heatmap — keyword counts / shares per site
+        st.markdown("#### 4.5 Heatmap — keyword counts per site")
+
+        heat_df = pivot_totals.melt(
+            id_vars=["site", "articles"],
+            value_vars=word_cols,
+            var_name="word",
+            value_name="count",
+        )
+
+        # Share per site
+        heat_df["total_keywords"] = heat_df.groupby("site")["count"].transform("sum")
+        heat_df["share"] = np.where(
+            heat_df["total_keywords"] > 0,
+            heat_df["count"] / heat_df["total_keywords"],
+            0.0,
+        )
+
+        metric_choice = st.radio(
+            "Heatmap metric",
+            options=["Counts", "Share (percentage)"],
+            index=0,
+            horizontal=True,
+            key="heatmap_metric",
+        )
+
+        # Choose the word that defines "bias" for site ordering
+        bias_word = st.selectbox(
+            "Bias word (for ordering sites)",
+            options=word_cols,
+            index=0,
+            key="heatmap_bias_word",
+        )
+
+        # How to order sites on the Y axis
+        sort_mode = st.radio(
+            "Site order",
+            options=["Alphabetical", f"By bias toward '{bias_word}'"],
+            index=1,
+            horizontal=True,
+            key="heatmap_sort_mode",
+        )
+
+        # Pre-compute site order if we sort by bias
+        if sort_mode.startswith("By bias"):
+            # Για κάθε site, πάρε το share της bias_word
+            bias_df = heat_df[heat_df["word"] == bias_word].copy()
+            # descending: πρώτα τα sites με μεγαλύτερο share
+            bias_df = bias_df.sort_values("share", ascending=False)
+            site_sort = bias_df["site"].tolist()
+        else:
+            # Default alphabetical order
+            site_sort = "ascending"
+
+        if metric_choice == "Counts":
+            color_field = "count:Q"
+            color_title = "Total count"
+        else:
+            color_field = "share:Q"
+            color_title = "Share of keyword"
+
+        metric_label = "counts" if metric_choice == "Counts" else "share"
+        heat_title = f"Keyword {metric_label} per site (ordered by bias toward '{bias_word}')"
+
+        heat_chart = (
+            alt.Chart(heat_df)
+            .mark_rect()
+            .encode(
+                x=alt.X("word:N", title="Keyword"),
+                y=alt.Y("site:N", title="Site", sort=site_sort),
+                color=alt.Color(color_field, title=color_title),
+                tooltip=[
+                    "site:N",
+                    "word:N",
+                    "articles:Q",
+                    "count:Q",
+                    alt.Tooltip("share:Q", title="share", format=".1%"),
+                ],
+            )
+            .properties(
+                height=500,
+                title=heat_title,
+            )
+        )
+
+        st.altair_chart(heat_chart, use_container_width=True)
+
+
     else:
         pivot_totals = pd.DataFrame()
         st.info("No keyword totals to show.")
